@@ -1,0 +1,36 @@
+---
+import "../styles/global.css";
+import Lienzo from "../components/Lienzo.astro";
+import { perfil } from "../data/perfil";
+
+interface Props {
+  titulo?: string;
+}
+const { titulo = `${perfil.nombre} ${perfil.apellido} — ${perfil.rol}` } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{titulo}</title>
+    <meta name="description" content={perfil.descripcion} />
+    <meta name="theme-color" content="#08113A" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={perfil.descripcion} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.site} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gloock&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <Lienzo />
+    <slot />
+  </body>
+</html>

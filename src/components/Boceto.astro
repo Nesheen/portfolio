@@ -1,0 +1,59 @@
+---
+// Dibujos de línea ilustrativos para cada proyecto. Para sumar uno nuevo:
+// agregá el caso acá y el nombre al enum `boceto` en content.config.ts.
+interface Props {
+  tipo: "chat" | "curva" | "piramide";
+  pie?: string;
+}
+const { tipo, pie } = Astro.props;
+---
+
+<figure class="boceto">
+  <svg viewBox="0 0 300 200" aria-hidden="true">
+    {tipo === "chat" && (
+      <>
+        <rect class="t" x="10" y="10" width="280" height="180" rx="6" />
+        <path class="t" d="M10 32 H290" />
+        <circle class="t" cx="24" cy="21" r="3" /><circle class="t" cx="36" cy="21" r="3" />
+        <rect class="t c1" x="26" y="48" width="170" height="34" rx="10" />
+        <text x="38" y="69">¿Qué devuelve tu función si…?</text>
+        <rect class="t c2" x="104" y="94" width="170" height="26" rx="10" />
+        <text x="116" y="111">Creo que None, porque…</text>
+        <rect class="t c1" x="26" y="132" width="150" height="26" rx="10" />
+        <text x="38" y="149">¿Y cómo lo comprobarías?</text>
+        <path class="t c3" d="M226 140 h50 M226 150 h36 M226 160 h44" />
+        <text x="226" y="132">traza</text>
+      </>
+    )}
+    {tipo === "curva" && (
+      <>
+        <path class="t" d="M30 170 H280 M30 170 V20" />
+        <path class="t c1" d="M30 160 C90 150 120 110 150 95 S230 40 275 34" />
+        <path class="t c2" d="M30 166 C100 160 150 140 200 120 S260 96 275 92" stroke-dasharray="4 5" />
+        <circle class="t c3" cx="150" cy="95" r="5" /><circle class="t c3" cx="200" cy="120" r="5" />
+        <text x="36" y="34">apropiación</text><text x="220" y="188">opacidad</text>
+      </>
+    )}
+    {tipo === "piramide" && (
+      <>
+        <rect class="t" x="30" y="150" width="240" height="30" />
+        <rect class="t c3" x="50" y="114" width="200" height="30" />
+        <rect class="t c2" x="70" y="78" width="160" height="30" />
+        <rect class="t c1" x="90" y="42" width="120" height="30" />
+        <text x="140" y="61">N4</text><text x="136" y="97">N3</text><text x="136" y="133">N2</text><text x="136" y="169">N1</text>
+      </>
+    )}
+  </svg>
+  {pie && <figcaption>{pie}</figcaption>}
+</figure>
+
+<style>
+  .boceto{margin:0; border:1px solid var(--line); border-radius:4px; padding:16px; align-self:start; background:var(--panel); backdrop-filter:blur(6px)}
+  svg{display:block; width:100%; height:auto}
+  .t{fill:none; stroke:var(--crema); stroke-width:1.2; stroke-linecap:round; stroke-linejoin:round}
+  .t.c1{stroke:var(--sol)}
+  .t.c2{stroke:var(--fuego)}
+  .t.c3{stroke:var(--selva)}
+  text{fill:var(--crema); font:500 10px var(--body)}
+  figcaption{font-size:12px; color:var(--fg-2); margin-top:8px}
+</style>

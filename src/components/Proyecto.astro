@@ -1,0 +1,55 @@
+---
+import { render, type CollectionEntry } from "astro:content";
+import Boceto from "./Boceto.astro";
+import DiagramaMicroservicios from "./DiagramaMicroservicios.astro";
+
+interface Props {
+  proyecto: CollectionEntry<"proyectos">;
+}
+const { data } = Astro.props.proyecto;
+const { Content } = await render(Astro.props.proyecto);
+const tieneDetalle = data.cifras.length > 0 || data.diagrama || data.detalle || data.link;
+---
+
+<article class="proy">
+  <div>
+    <p class="proy-meta">{data.meta}</p>
+    <h3>{data.titulo}</h3>
+    <div class="cuerpo"><Content /></div>
+    {data.chips.length > 0 && <ul class="chips">{data.chips.map((c) => <li>{c}</li>)}</ul>}
+
+    {tieneDetalle && (
+      <div class="detalle">
+        {data.cifras.length > 0 && (
+          <div class="cifras">
+            {data.cifras.map((c) => (
+              <div class="cifra"><b>{c.valor}</b><span>{c.etiqueta}</span></div>
+            ))}
+          </div>
+        )}
+        {data.diagrama === "microservicios" && <DiagramaMicroservicios servicios={data.servicios} />}
+        {data.detalle && <p class="detalle-txt">{data.detalle}</p>}
+        {data.link && <a class="link" href={data.link} target="_blank" rel="noopener">{data.linkTexto ?? "Ver más"} →</a>}
+      </div>
+    )}
+  </div>
+  {data.boceto !== "ninguno" && <Boceto tipo={data.boceto} pie={data.bocetoPie} />}
+</article>
+
+<style>
+  .proy{display:grid; grid-template-columns:1fr 340px; gap:48px; padding:44px 0; border-bottom:1px solid var(--line)}
+  .proy-meta{font-size:15px; color:var(--sol); margin:0 0 10px}
+  h3{font-family:var(--display); font-weight:400; font-size:clamp(30px,3.4vw,46px); line-height:1.05; margin:0 0 14px; letter-spacing:-.01em}
+  .cuerpo :global(p){max-width:58ch; margin:0 0 16px}
+  .detalle{margin-top:24px; padding:24px; border-radius:10px; background:var(--panel); backdrop-filter:blur(6px); border:1px solid var(--line)}
+  .cifras{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:0 0 20px}
+  .cifra b{display:block; font-family:var(--display); font-weight:400; font-size:44px; line-height:1; color:var(--sol)}
+  .cifra span{font-size:14px; color:var(--fg-2)}
+  .detalle-txt{margin:0}
+  .detalle > * + .detalle-txt{margin-top:16px}
+  .link{display:inline-block; margin-top:14px; color:var(--sol); text-underline-offset:4px}
+  @media (max-width:900px){
+    .proy{grid-template-columns:1fr; gap:24px}
+    .cifra b{font-size:32px}
+  }
+</style>

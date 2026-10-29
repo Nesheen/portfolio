@@ -1,0 +1,71 @@
+---
+import { guionSocrates } from "../data/perfil";
+---
+
+<section id="socrates" aria-labelledby="t-soc">
+  <div class="sec-head">
+    <span class="sec-num">Preguntale</span>
+    <h2 id="t-soc">Sócrates responde con preguntas.</h2>
+  </div>
+  <div class="socrates">
+    <div class="intro">
+      <p>Una versión chica de la idea detrás del tutor: en vez de contestarte, te devuelve la pregunta para que llegues vos.</p>
+      <p class="nota">Por ahora las respuestas son guionadas.</p>
+    </div>
+    <div class="chat" id="chat" aria-live="polite">
+      <div class="msg soc"><b>Sócrates</b>Antes de contarte nada: ¿qué viniste a buscar acá?</div>
+      <div class="preguntas" id="preguntas">
+        {guionSocrates.map((item) => (
+          <button type="button" data-q={item.q} data-a={item.a}>{item.q}</button>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const chat = document.getElementById("chat")!;
+  const cont = document.getElementById("preguntas")!;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  cont.querySelectorAll<HTMLButtonElement>("button").forEach((b) => {
+    b.addEventListener("click", () => {
+      b.disabled = true;
+      const { q = "", a = "" } = b.dataset;
+      const yo = document.createElement("div");
+      yo.className = "msg yo";
+      yo.textContent = q;
+      chat.insertBefore(yo, cont);
+
+      const so = document.createElement("div");
+      so.className = "msg soc";
+      const firma = document.createElement("b");
+      firma.textContent = "Sócrates";
+      const span = document.createElement("span");
+      so.append(firma, span);
+      chat.insertBefore(so, cont);
+
+      if (reduce) { span.textContent = a; return; }
+      let i = 0;
+      const tick = () => { span.textContent = a.slice(0, ++i); if (i < a.length) setTimeout(tick, 14); };
+      setTimeout(tick, 350);
+    });
+  });
+</script>
+
+<style>
+  .socrates{display:grid; grid-template-columns:1fr 1.2fr; gap:48px; align-items:start}
+  .intro p{max-width:44ch; color:var(--fg-2)}
+  .chat{border:1px solid var(--line); border-radius:12px; padding:20px; background:var(--panel); backdrop-filter:blur(6px); min-height:300px; display:flex; flex-direction:column; gap:12px}
+  .chat :global(.msg){max-width:88%; padding:12px 14px; border-radius:12px; font-size:16px; line-height:1.45}
+  .chat :global(.msg.yo){align-self:flex-end; background:var(--sol); color:var(--noche); border-bottom-right-radius:3px}
+  .chat :global(.msg.soc){align-self:flex-start; border:1px solid var(--line); border-bottom-left-radius:3px}
+  .chat :global(.msg.soc b){font-family:var(--display); font-weight:400; display:block; font-size:14px; color:var(--sol); margin-bottom:2px}
+  .preguntas{display:flex; flex-wrap:wrap; gap:8px; margin-top:auto; padding-top:8px}
+  .preguntas button{font:500 14px var(--body); color:var(--fg); background:transparent; border:1px solid var(--fg); border-radius:999px; padding:8px 12px; cursor:pointer}
+  .preguntas button:hover{background:var(--fg); color:var(--noche)}
+  .preguntas button:disabled{opacity:.35; cursor:default; background:transparent; color:var(--fg)}
+  @media (max-width:900px){
+    .socrates{grid-template-columns:1fr; gap:24px}
+  }
+</style>

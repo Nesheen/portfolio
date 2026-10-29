@@ -1,0 +1,15 @@
+---
+import { perfil } from "../data/perfil";
+---
+
+<footer>
+  <div class="wrap">
+    <span>{perfil.nombre} {perfil.apellido}, Mendoza</span>
+    <span>Hecho a mano, con tinta y con agentes.</span>
+  </div>
+</footer>
+
+<style>
+  footer{position:relative; z-index:1; border-top:1px solid var(--line); padding:24px 0 32px; font-size:14px; color:var(--fg-2); background:color-mix(in srgb, var(--bg) 80%, transparent)}
+  footer .wrap{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap}
+</style>

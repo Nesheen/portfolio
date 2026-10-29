@@ -1,0 +1,29 @@
+---
+import { perfil } from "../data/perfil";
+
+const redes = [
+  { texto: "GitHub", href: perfil.links.github },
+  { texto: "LinkedIn", href: perfil.links.linkedin },
+  { texto: "CV en PDF", href: perfil.links.cv },
+].filter((r) => r.href);
+---
+
+<section id="contacto" class="contacto" aria-labelledby="t-con">
+  <p id="t-con">Si tenés un proyecto, un equipo o una pregunta:</p>
+  <a class="mail" href={`mailto:${perfil.mail}`}>{perfil.mail}</a>
+  {redes.length > 0 && (
+    <div class="redes">
+      {redes.map((r) => <a href={r.href} target="_blank" rel="noopener">{r.texto}</a>)}
+    </div>
+  )}
+</section>
+
+<style>
+  .contacto{padding:140px 0 80px}
+  .contacto p{color:var(--fg-2); margin:0 0 16px}
+  .mail{font-family:var(--display); font-size:clamp(28px,6.4vw,92px); line-height:1; letter-spacing:-.02em; text-decoration:none; overflow-wrap:anywhere; display:inline-block; border-bottom:2px solid var(--sol); padding-bottom:6px}
+  .mail:hover{color:var(--sol)}
+  .redes{display:flex; flex-wrap:wrap; gap:24px; margin-top:40px; font-size:16px}
+  .redes a{text-underline-offset:4px}
+  .redes a:hover{color:var(--sol)}
+</style>

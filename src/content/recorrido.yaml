@@ -1,0 +1,47 @@
+# Línea de tiempo. Cada item necesita un `id` único y un `orden` (menor = más arriba).
+- id: secundario
+  orden: 1
+  anio: 2022
+  titulo: Secundario
+  lugar: Colegio San Pío X, Mendoza
+
+- id: tutor-prog
+  orden: 2
+  anio: 2025
+  titulo: Tutor de Programación I y II
+  lugar: UTN, Mendoza
+  texto: Tutorías de lógica y resolución de problemas en Python y Java. Corrección de proyectos y acompañamiento en debugging.
+  extra:
+    - "Programación I: sintaxis, estructuras de control, funciones y algoritmos."
+    - "Programación II: POO, estructuras de datos y excepciones."
+
+- id: tup
+  orden: 3
+  anio: 2026
+  titulo: Técnico Universitario en Programación
+  lugar: UTN, Mendoza
+  texto: Título obtenido, con especialización full stack.
+
+- id: coord-prog4
+  orden: 4
+  anio: 2026
+  titulo: Coordinación de Programación IV
+  lugar: TUPaD, UTN
+  texto: Organización y logística del curso, y coordinación del equipo de tutores.
+  extra:
+    - Diseño de cronogramas de evaluación (trabajo integrador, examen y coloquio).
+    - Gestión de reclamos y casos particulares de estudiantes.
+
+# TODO: confirmar fecha de inicio y si se puede nombrar el proyecto.
+- id: utn-san-nicolas
+  orden: 5
+  anio: 2026
+  titulo: Proyecto interno y coordinación de cursos
+  lugar: UTN San Nicolás, remoto
+  texto: Lidero un proyecto interno y coordino cursos de programación con un equipo a cargo.
+
+- id: humai
+  orden: 6
+  anio: Hoy
+  titulo: Diplomatura en Inteligencia Artificial
+  lugar: Humai, en curso

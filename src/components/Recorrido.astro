@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+const hitos = (await getCollection("recorrido")).sort((a, b) => a.data.orden - b.data.orden);
+---
+
+<section id="recorrido" aria-labelledby="t-rec">
+  <div class="sec-head">
+    <span class="sec-num">Recorrido</span>
+    <h2 id="t-rec">El camino hasta acá.</h2>
+  </div>
+  <ol class="linea" id="linea">
+    {hitos.map(({ data }) => (
+      <li class="hito">
+        <span class="hito-anio">{data.anio}</span>
+        <div class="hito-cuerpo">
+          <h3>{data.titulo}</h3>
+          <p class="lugar">{data.lugar}</p>
+          {data.texto && <p>{data.texto}</p>}
+          {data.extra.length > 0 && <ul>{data.extra.map((e) => <li>{e}</li>)}</ul>}
+        </div>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<script>
+  // La espina de la línea se va llenando con el scroll.
+  const linea = document.getElementById("linea")!;
+  const hitos = [...linea.querySelectorAll<HTMLElement>(".hito")];
+  const avanzar = () => {
+    const rc = linea.getBoundingClientRect(), vh = innerHeight * 0.65;
+    const p = Math.max(0, Math.min(1, (vh - rc.top) / rc.height));
+    linea.style.setProperty("--avance", p * 100 + "%");
+    hitos.forEach((h) => h.classList.toggle("hecho", h.getBoundingClientRect().top < vh));
+  };
+  addEventListener("scroll", avanzar, { passive: true });
+  avanzar();
+</script>
+
+<style>
+  .linea{position:relative; list-style:none; margin:0; padding:0}
+  .linea::before{content:""; position:absolute; left:110px; top:8px; bottom:8px; width:1.5px; background:var(--line)}
+  .linea::after{content:""; position:absolute; left:110px; top:8px; width:1.5px; height:var(--avance,0%); background:linear-gradient(var(--selva),var(--sol),var(--fuego)); transition:height .2s linear}
+  .hito{display:grid; grid-template-columns:110px 1fr; padding:0 0 44px}
+  .hito-anio{font-family:var(--display); font-size:28px; line-height:1}
+  .hito-cuerpo{padding-left:36px; position:relative}
+  .hito-cuerpo::before{content:""; position:absolute; left:-6px; top:8px; width:13px; height:13px; border-radius:50%; background:var(--bg); border:1.5px solid var(--fg); transition:background-color .3s, border-color .3s}
+  .hito.hecho .hito-cuerpo::before{background:var(--sol); border-color:var(--sol)}
+  h3{font-size:20px; font-weight:600; margin:0 0 2px}
+  .lugar{font-size:15px; color:var(--fg-2); margin:0 0 8px}
+  .hito p{margin:0; max-width:60ch}
+  .hito ul{margin:10px 0 0; padding-left:20px; font-size:16px; color:var(--fg-2)}
+  @media (max-width:900px){
+    .linea::before,.linea::after{left:72px}
+    .hito{grid-template-columns:72px 1fr}
+    .hito-anio{font-size:22px}
+    .hito-cuerpo{padding-left:24px}
+  }
+</style>

@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import Proyecto from "./Proyecto.astro";
+
+const proyectos = (await getCollection("proyectos", ({ data }) => !data.borrador))
+  .sort((a, b) => a.data.orden - b.data.orden);
+---
+
+<section id="proyectos" aria-labelledby="t-proy">
+  <div class="sec-head">
+    <span class="sec-num">Proyectos</span>
+    <div>
+      <h2 id="t-proy">Lo que construí.</h2>
+      <p>Los dibujos de la derecha son esquemas ilustrativos, no capturas.</p>
+    </div>
+  </div>
+  <div class="lista">
+    {proyectos.map((p) => <Proyecto proyecto={p} />)}
+  </div>
+</section>
+
+<style>
+  .lista{border-top:1px solid var(--line)}
+</style>

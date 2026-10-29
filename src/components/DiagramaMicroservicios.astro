@@ -1,0 +1,44 @@
+---
+// nginx → Clerk → gateway → grilla de servicios. Si no hay nombres, los nodos van sin etiqueta.
+interface Props {
+  servicios: string[];
+  cantidad?: number;
+}
+const { servicios, cantidad = 12 } = Astro.props;
+const filas = [40, 125, 210];
+const columnas = Math.ceil(cantidad / filas.length);
+const nodos = Array.from({ length: cantidad }, (_, i) => {
+  const y = filas[Math.floor(i / columnas)];
+  const x = 380 + (i % columnas) * 62;
+  return { x, y, nombre: servicios[i] };
+});
+---
+
+<div class="arq">
+  <svg viewBox="0 0 640 250" role="img" aria-label={`Diagrama de arquitectura: nginx como entrada, autenticación con Clerk, un gateway y ${cantidad} servicios`}>
+    <path class="flujo" d="M70 125 H150 M230 125 H290" />
+    <path class="t" d="M330 125 V40 M330 125 V210 M330 40 H372 M330 125 H372 M330 210 H372" />
+    <rect class="nodo" x="10" y="105" width="60" height="40" rx="6" /><text x="40" y="129">nginx</text>
+    <rect class="nodo" x="150" y="105" width="80" height="40" rx="6" /><text x="190" y="129">Clerk auth</text>
+    <rect class="nodo clave" x="290" y="105" width="80" height="40" rx="6" /><text x="330" y="129">gateway</text>
+    {nodos.map((n, i) => (
+      <>
+        <rect class="nodo svc" x={n.x} y={n.y - 16} width="54" height="32" rx="5" style={`animation-delay:${i * 0.15}s`} />
+        {n.nombre && <text x={n.x + 27} y={n.y + 4} class="svc-txt">{n.nombre}</text>}
+      </>
+    ))}
+  </svg>
+</div>
+
+<style>
+  .arq svg{width:100%; height:auto; display:block}
+  .t{fill:none; stroke:var(--crema); stroke-width:1.2}
+  .nodo{fill:color-mix(in srgb, var(--noche) 60%, transparent); stroke:var(--crema); stroke-width:1}
+  .nodo.clave{stroke:var(--sol); stroke-width:1.6}
+  .nodo.svc{stroke:var(--selva); animation:latido 3s ease-in-out infinite}
+  .flujo{fill:none; stroke:var(--fuego); stroke-width:1.4; stroke-dasharray:4 6; animation:flujo 1.2s linear infinite}
+  text{fill:var(--crema); font:500 11px var(--body); text-anchor:middle}
+  .svc-txt{font-size:9px}
+  @keyframes flujo{to{stroke-dashoffset:-20}}
+  @keyframes latido{50%{stroke-opacity:.35}}
+</style>

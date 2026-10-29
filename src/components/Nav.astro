@@ -1,0 +1,35 @@
+---
+import { perfil } from "../data/perfil";
+---
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="firma" href="#top" aria-label={`${perfil.nombre} ${perfil.apellido}, volver arriba`}>NB</a>
+    <nav class="nav-links" aria-label="Secciones">
+      <a href="#quien">Quién</a>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#recorrido">Recorrido</a>
+      <a href="#socrates">Sócrates</a>
+      <a class="nav-cta" href="#contacto">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav{
+    position:sticky; top:0; z-index:20;
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    background:color-mix(in srgb, var(--bg) 78%, transparent);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-in{max-width:var(--max); margin:0 auto; padding:14px 24px; display:flex; align-items:center; gap:28px}
+  .firma{font-family:var(--display); font-size:22px; text-decoration:none; color:var(--sol)}
+  .nav-links{display:flex; align-items:center; gap:22px; margin-left:auto; font-size:15px}
+  .nav-links a{text-decoration:none; opacity:.8}
+  .nav-links a:hover{opacity:1; text-decoration:underline; text-underline-offset:4px}
+  .nav-cta{border:1.5px solid var(--sol); color:var(--sol); padding:8px 14px; border-radius:999px; opacity:1!important}
+  .nav-cta:hover{background:var(--sol); color:var(--noche); text-decoration:none!important}
+  @media (max-width:760px){
+    .nav-links a:not(.nav-cta){display:none}
+  }
+</style>
